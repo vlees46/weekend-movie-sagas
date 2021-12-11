@@ -14,6 +14,7 @@ import axios from 'axios';
 // Create the rootSaga generator function
 function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
+    yield takeEvery('FETCH_MOVIE_DETAILS', fetchMovieDetails)
 }
 
 function* fetchAllMovies() {
@@ -28,11 +29,39 @@ function* fetchAllMovies() {
     }
         
 }
+// SAGA for Movie Details
+function* fetchMovieDetails(action){
+    try{
+        const selectMovie = action.payload;
+        const movieDetails = yield axios.get(`/api/movie/movie-details/${selectMovie.id}`);
+        yield put({ type: 'SET_MOVIE_DETAILS', payload: movieDetails.data })
+    } catch (error) {
+        console.log('error in fetchMovieDetails:', error)
+    };
+}
 
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
-// Used to store movies returned from the server
+// REDUCER - Selected MOVIE 
+const selectedMovie = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_MOVIE_DETAILS':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+// REDUCER - Select MOVIE Genre
+const selectGenreReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_MOVIE_GENRE':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+// REDUCER - ALL MOVIES Used to store movies returned from the server
 const movies = (state = [], action) => {
     switch (action.type) {
         case 'SET_MOVIES':
@@ -41,6 +70,18 @@ const movies = (state = [], action) => {
             return state;
     }
 }
+
+// REDUCER - Used to store movies returned from the server
+const allGenreReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_GENRE':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
+
 
 // Used to store the movie genres
 const genres = (state = [], action) => {
@@ -57,6 +98,9 @@ const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
+        selectedMovie,
+        selectGenreReducer
+
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),
