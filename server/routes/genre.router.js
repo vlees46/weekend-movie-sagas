@@ -17,9 +17,17 @@ router.get('/selected-movie-genre/:id', (req,res) => {
   });
 }); 
 
+// get ALL genres 
 router.get('/', (req, res) => {
-  // Add query to get all genres
-  res.sendStatus(500)
+  const genresQuery= `SELECT * FROM "genres" ORDER BY "name";`;
+  pool.query(genresQuery)
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR getting all genres (genre.router.js)', err);
+      res.sendStatus(500)
+    })
 });
 
 module.exports = router;

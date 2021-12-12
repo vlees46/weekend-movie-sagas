@@ -20,7 +20,8 @@ function MovieList() {
 
     // The is where will we hand the Movie Details Page & Genre Details Clicks
     const handleClick =(movie) => {
-        dispatch({ type: 'FETCH_MOVIE_DETAILS', payload: movie})
+       dispatch({ type: 'FETCH_MOVIE_DETAILS', payload: movie})
+       dispatch({ type: 'FETCH_GENRE_DETAILS', payload: movie })
         history.push(`/movie-details/${movie.id}`);
     };
 

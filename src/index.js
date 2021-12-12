@@ -85,7 +85,7 @@ function* addMovie(action) {
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
-// REDUCER - Selected MOVIE 
+// REDUCER - Selected MOVIE details
 const selectedMovie = (state = [], action) => {
     switch (action.type) {
         case 'SET_MOVIE_DETAILS':
@@ -103,7 +103,16 @@ const selectGenreReducer = (state = [], action) => {
             return state;
     }
 }
-// REDUCER - ALL MOVIES Used to store movies returned from the server
+
+// Used to store the  ALL movie genres
+const genres = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_GENRES':
+            return action.payload;
+        default:
+            return state;
+    }
+}
 const movies = (state = [], action) => {
     switch (action.type) {
         case 'SET_MOVIES':
@@ -113,7 +122,7 @@ const movies = (state = [], action) => {
     }
 }
 
-// REDUCER - Used to store movies returned from the server
+// REDUCER - Used to store all Genre Reducer
 const allGenreReducer = (state = [], action) => {
     switch (action.type) {
         case 'SET_GENRE':
@@ -125,15 +134,7 @@ const allGenreReducer = (state = [], action) => {
 
 
 
-// Used to store the movie genres
-const genres = (state = [], action) => {
-    switch (action.type) {
-        case 'SET_GENRES':
-            return action.payload;
-        default:
-            return state;
-    }
-}
+
 
 // Create one store that all components can use
 const storeInstance = createStore(
