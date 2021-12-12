@@ -1,4 +1,5 @@
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch  } from 'react-redux';
 import { useEffect } from 'react'; 
 
@@ -13,7 +14,7 @@ function MovieDetail() {
     const prevPage= () => {
         history.push('/');
     }
-    const { id } useParams();
+    const { id } = useParams();
 
 
     useEffect(() => {
@@ -24,7 +25,16 @@ function MovieDetail() {
     return(
         <div className='movieDetails'>
             <h1>Details for {movieItemDetails}</h1>
-            <img 
+            <img width="300px" src={movieItemDetails.poster} />
+            <p className="detailDescription">{movieItemDetails.description}</p>
+            <h2>Genres:</h2>
+            <ul>
+                {genreArray.map((genre) =>
+                    <li key={genre.name}>{genre.name}</li>
+                )}
+            </ul>
+            <button onClick={() => prevPage()}>Previous Page</button>
         </div>
     )
 }
+export default MovieDetail;

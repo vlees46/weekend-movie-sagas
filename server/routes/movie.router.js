@@ -16,6 +16,24 @@ router.get('/', (req, res) => {
 
 });
 
+// GET Movie details from USER select movies
+
+router.get('/movie-details/:id', (req, res) => {
+
+  const queryText = `SELECT "movies"."id", "description", "poster", "title" FROM "genres"
+  JOIN "movies_genres" ON "movies_genres"."genre_id" = "genres"."id"
+  JOIN "movies" ON "movies_genres"."movie_id" = "movies"."id"
+  WHERE "movies"."id" = $1
+  GROUP BY "movies"."id";`;
+  pool.query(queryText [req.params.id])
+    .then((result) => {res.send(result.row[0]);})
+    .catch((error) => {
+      console.log('error on server side movie details', error)
+      res.sendStatus(500);
+    });     
+  });
+    
+
 router.post('/', (req, res) => {
   console.log(req.body);
   // RETURNING "id" will give us back the id of the created movie
