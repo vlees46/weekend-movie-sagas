@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 
 // GET Movie details from USER select movies
 
-router.get('/movie-details/:id', (req, res) => {
+router.get('/movie-details/:id', (req,res) => {
 
   const queryText = `SELECT "movies"."id", "description", "poster", "title" FROM "genres"
   JOIN "movies_genres" ON "movies_genres"."genre_id" = "genres"."id"

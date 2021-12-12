@@ -16,15 +16,15 @@ function MovieDetail() {
     }
     const { id } = useParams();
 
-
-    useEffect(() => {
-        dispatch({ type: 'FETCH_MOVIE_DETAILS', payload: {id: id}})
-    })
+    console.log('this is the id movie details page', id);
+useEffect(() => { 
+    dispatch({ type: 'FETCH_MOVIE_DETAILS', payload: { id: id } })
+}); 
 
 
     return(
         <div className='movieDetails'>
-            <h1>Details for {movieItemDetails}</h1>
+            <h1>Details for {movieItemDetails.title}</h1>
             <img width="300px" src={movieItemDetails.poster} />
             <p className="detailDescription">{movieItemDetails.description}</p>
             <h2>Genres:</h2>

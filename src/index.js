@@ -15,6 +15,9 @@ import axios from 'axios';
 function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
     yield takeEvery('FETCH_MOVIE_DETAILS', fetchMovieDetails);
+    yield takeEvery('FETCH_GENRE_DETAILS', fetchGenreDetails);
+    yield takeEvery('FETCH_GENRES', fetchAllGenres);
+    yield takeEvery('ADD_MOVIE', addMovie);
 }
 
 function* fetchAllMovies() {
@@ -33,7 +36,7 @@ function* fetchAllMovies() {
 function* fetchMovieDetails(action){
     try{
         const selectMovie = action.payload;
-        const movieDetails = yield axios.get(`/api/movie/movie-details/${selectMovie}`);
+        const movieDetails = yield axios.get(`/api/movie/movie-details/${selectMovie.id}`);
         yield put({
              type: 'SET_MOVIE_DETAILS',
              payload: movieDetails.data 
@@ -41,6 +44,42 @@ function* fetchMovieDetails(action){
     } catch (error) {
         console.log('error in fetchMovieDetails:', error)
     };
+}
+// SAGA - details for selected movie GENRE
+function* fetchGenreDetails(action) {
+    try {
+        console.log('fetch SELECTED movie genres in index.js', action)
+        const selectedMovie = action.payload;
+        const selectedMovieGenre = yield axios.get(`/api/genre/selected-movie-genre/${selectedMovie.id}`);
+        yield put({ type: 'SET_SELECTED_MOVIE_GENRE', payload: selectedMovieGenre.data })
+        console.log('index.js selectedMovieGenre.data:', selectedMovieGenre.data);
+    } catch (error) {
+        console.log('error in fetchMovieDetails:', error)
+    }
+}
+
+function* fetchAllGenres() {
+    try {
+        const genres = yield axios.get('/api/genre/');
+        yield put({ type: 'SET_GENRES', payload: genres.data });
+    } catch (error) {
+        console.error('get all error:', error);
+    }
+}
+
+// SAGA - add movie
+function* addMovie(action) {
+    try {
+        console.log('adding action.payload - index.js:', action.payload);
+        yield axios({
+            method: 'POST',
+            url: '/api/movie/',
+            data: action.payload
+        });
+        yield put({ type: 'FETCH_MOVIES' })
+    } catch (error) {
+        console.log('error in sending new flick, index.js:', error)
+    }
 }
 
 // Create sagaMiddleware

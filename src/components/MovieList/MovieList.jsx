@@ -7,11 +7,13 @@ function MovieList() {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    
+
     const movies = useSelector(store => store.movies);
+    const genres = useSelector(store => store.genres);
 
     useEffect(() => {
         dispatch({ type: 'FETCH_MOVIES' });
+        dispatch({ type: 'FETCH_GENRES' });
     }, []);
 
     // This will be where we add a MOVIE
@@ -30,7 +32,7 @@ function MovieList() {
                     return (
                         <div key={movie.id} >
                            <div className="posterTitle" key={movie.id}>
-                                <h3 className="movieTitles" onClick={() => handleClick(movie)}>movie.title</h3>
+                                <h3 className="movieTitles" onClick={() => handleClick(movie)}>{movie.title}</h3>
                                 <img className="moviePosters" onClick={() => handleClick(movie)} src={movie.poster} alt={movie} />
                            </div>
                     
