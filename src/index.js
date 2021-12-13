@@ -23,7 +23,7 @@ function* rootSaga() {
 function* fetchAllMovies() {
     // get all movies from the DB
     try {
-        const movies = yield axios.get('/api/movie');
+        const movies = yield axios.get('/api/movie/');
         console.log('get all:', movies.data);
         yield put({ type: 'SET_MOVIES', payload: movies.data });
 
@@ -49,9 +49,9 @@ function* fetchMovieDetails(action){
 function* fetchGenreDetails(action) {
     try {
         console.log('fetch SELECTED movie genres in index.js', action)
-        const selectedMovie = action.payload;
-        const selectedMovieGenre = yield axios.get(`/api/genre/selected-movie-genre/${selectedMovie.id}`);
-        yield put({ type: 'SET_SELECTED_MOVIE_GENRE', payload: selectedMovieGenre.data })
+        const selectMovie = action.payload;
+        const selectedMovieGenre = yield axios.get(`/api/genre/selected-movie-genre/${selectMovie.id}`);
+        yield put({ type: 'SET_MOVIE_GENRE', payload: selectedMovieGenre.data })
         console.log('index.js selectedMovieGenre.data:', selectedMovieGenre.data);
     } catch (error) {
         console.log('error in fetchMovieDetails:', error)
